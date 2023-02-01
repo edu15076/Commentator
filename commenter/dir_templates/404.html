@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+
+{% load static %}
+
+{% block title %}
+    404
+{% endblock %}
+
+{% block nav %}
+    {% include 'nav.html' %}
+{% endblock %}
+
+{% block main-id %}err-404-page{% endblock %}
+
+{% block main %}
+    <h1>404</h1>
+    <h4>Page does not exist.</h4>
+{% endblock %}
+
+{% block scripts %}
+    <script src='{% static "scripts/logged.js" %}'></script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% if user.is_authenticated %}
+    <nav class="logged">
+        <div class="zero translate">
+            <a href="{% url 'user' profile=user.get_username %}" class="main-text display-none discreet">{{ user.get_full_name }}</a>
+            <a href="{% url 'user' profile=user.get_username %}" class="minor-text display-none discreet">{{ user.get_username }}</a>
+            <a href="{% url 'sign_out' username=user.get_username %}?next={{ request.path }}">Sign out</a>
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+        </div>
+        <img class="frame" draggable="false" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E">
+    </nav>
+{% else %}
+    <nav class="log">
+        <a class="main-text" href="{% url 'sign_in' %}?next={{ request.path }}">Sign in</a>
+        <a class="main-text" href="{% url 'sign_up' %}?next={{ request.path }}">Sign up</a>
+    </nav>
+{% endif %}

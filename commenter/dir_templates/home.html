@@ -1,0 +1,100 @@
+{% extends "main.html" %}
+
+{% load static %}
+
+{% block title %}
+    home
+{% endblock %}
+
+{% block nav %}
+    {% include 'nav.html' %}
+{% endblock %}
+
+{% block main-id %}home-page{% endblock %}
+
+{% block main %}
+    <div class="box">
+        <h1 class="main-text">Bem vindo ao incrível Commentator!</h1>
+        <br>
+        <br>
+        <h2 class="main-text">Sobre o site:</h2>
+        <br>
+        <p>
+            Esse site foi desenvolvido pelo aluno
+            <a class="link-like" href="{% url "user" profile="edu15076" %}">Eduardo Costa de Souza</a> 
+            na tentativa, bem sucedida, de aprender 
+            <a class="link-like" href="https://www.djangoproject.com/" target="_blank" rel="noopener noreferrer">Django</a> 
+            do zero.
+            <br>
+            <br>
+            O principal objetivo desse site é, como o próprio nome diz, comentar nos perfis dos usuários.
+            Foi criada uma estrutura visando esse objetivo, uma vez que o usuário pode criar um perfil 
+            para comentar, e uma vez criado o usuário é capaz de autenticar-se novamente na tela de login, a 
+            <a class="link-like" href="{% url "profiles" %}">listagem de perfis</a> para encontrar novos perfis e 
+            os comentários em si que aceitam URLs.
+            <br>
+            <br>
+            A edição de perfis, bio, GitHub, email e mudança de nome, são um aspecto separado da ideia de criar comentários
+            em si, mas acrescem maior flexibilidade aos usuários e suas preferências. Além de terem o claro objetivo de apresentar
+            o usuário. Essa era a minha, <a class="link-like" href="{% url "user" profile="edu15076" %}">Eduardo</a>, 
+            necessidade inicial, considerando que o site foi criado, também com esse objetivo, para me apresentar como
+            candidato a um projeto de extensão.
+        </p>
+        <br>
+        <br>
+        <h2 class="main-text">Das funcionalidades:</h2>
+        <br>
+        <ul>
+            <li>Criar uma conta.</li>
+            <li>Logar.</li>
+            <li>Deletar conta.</li>
+            <li>Editar dados da conta (Nome, mostrar email, link GitHub, bio).</li>
+            <li>Disponibilizar links, nos comentários e na bio, iniciados em: https://, http:// e www. .</li>
+            <li>Visualizar outras contas.</li>
+            <li>Comentar em outras contas e na sua própria.</li>
+            <li>Deletar comentários na sua conta ou de sua autoria.</li>
+            <li>Acessar a sua conta pelo seu nome ou nome de usuário, que aparecem ao clicar no círculo do canto superior direito.</li>
+        </ul>
+        <br>
+        <br>
+        <h2 class="main-text">Das imagens utilizadas:</h2>
+        <br>
+        <ul>
+            <li><a class="link-like" href="https://www.wallpaperflare.com/gray-wallpaper-monochrome-simon-c-page-pattern-backgrounds-wallpaper-hgtf" target="_blank" rel="noopener noreferrer">Background image</a></li>
+        </ul>
+        <br>
+        <br>
+        <h2 class="main-text">Das fontes utilizadas:</h2>
+        <br>
+        <ul>
+            <li><a class="link-like" href="https://www.cdnfonts.com/segoe-ui-4.font" target="_blank" rel="noopener noreferrer">Segoe UI</a></li>
+        </ul>
+        <br>
+        <br>
+        <h2 class="main-text">Das referências:</h2>
+        <br>
+        <ul>
+            <li><a class="link-like" href="https://www.djangoproject.com/" target="_blank" rel="noopener noreferrer">Django</a></li>
+            <li><a class="link-like" href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer">Mdn</a></li>
+            <li><a class="link-like" href="https://www.geeksforgeeks.org/" target="_blank" rel="noopener noreferrer">GeeksforGeeks</a></li>
+        </ul>
+        <br>
+        <br>
+        <h2 class="main-text">Links:</h2>
+        <br>
+        <ul>
+            <li>
+                <a class="link-like" href="{% url "profiles" %}">list users</a><br>
+                <small>Lista os usuários cadastrados.</small>
+            </li>
+            <li>
+                <a class="link-like" href="{% url "user" profile="edu15076" %}">edu15076</a><br>
+                <small>Criador da página.</small>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src='{% static "scripts/logged.js" %}'></script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "main.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Sign up{% endblock %}
+
+{% load static %}
+
+{% block main-id %}sign-up-page{% endblock %}
+
+{% block main %}
+    {% if fail %}
+        <div class="error">
+            <div>There was a problem signing up.</div>
+        </div>
+    {% endif %}
+    <form id="sign-up" class="box" method="post">
+        {% csrf_token %}
+        {% crispy sign_up_form %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        <small class="center">Already have an account? <a class="link-like" href="{% url 'sign_in' %}?next={{ request.GET.next }}">Sign in</a></small>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script src='{% static "scripts/sign_up.js" %}'></script>
+{% endblock %}

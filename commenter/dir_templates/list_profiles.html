@@ -1,0 +1,29 @@
+{% extends 'main.html' %}
+
+{% load static %}
+
+{% block nav %}
+    {% include 'nav.html' %}
+{% endblock nav %}
+
+{% block main-id %}list-profiles-page{% endblock main-id %}
+
+{% block main %}
+    {% for profile in profiles %}
+        <a href="{% url 'user' profile=profile.username %}" class="profile box discreet">
+            <div>
+                <h3 class="main-text">{{ profile.first_name }} {{ profile.last_name }}</h3>
+                <h4 class="minor-text">{{ profile.username }}</h4>
+            </div>
+            {% if profile.img %}
+                <img class="frame" src={{ profile.img }}>
+            {% else %}
+                <img class="frame" draggable="false" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E">
+            {% endif %}
+        </a>
+    {% endfor %}
+{% endblock main %}
+
+{% block scripts %}
+    <script src='{% static "scripts/logged.js" %}'></script>
+{% endblock scripts %}

@@ -1,0 +1,132 @@
+{% extends "main.html" %}
+
+{% block title %}{{ page_user.get_username }}{% endblock %}
+
+{% load static %}
+{% load url_blank %}
+
+{% block nav %}
+    {% include 'nav.html' %}
+{% endblock %}
+
+{% block main-id %}user-page{% endblock %}
+
+{% block main %}
+
+    <section class="box" id="user">
+        {% if edu15076 %}
+            <img class="frame" draggable="false" src="{% static "img/foto_edu15076.jpg" %}">
+        {% else %}
+            <img class="frame" draggable="false" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E">
+        {% endif %}
+        <div>
+            <div id="main-name">
+                <h2 class="main-text">{% if edit %}<img class="edit-pen" src="{% static "img/pencil-edit-button.svg" %}" draggable="false">{% endif %}{{ page_user.get_full_name }}</h2>
+                <h3 class="minor-text">{{ page_user.get_username }}</h3>
+            </div>
+            <div id="accounts">
+                {% if page_user.github %}
+                    <a href="{{ page_user.github }}" target="_blank" rel="noopener noreferrer"><img src="{% static "img/github.svg" %}" draggable="false"></a>
+                {% else %}
+                    <a class="display-none" href="/" target="_blank" rel="noopener noreferrer"><img src="{% static "img/github.svg" %}" draggable="false"></a>
+                {% endif %}
+
+                {% if page_user.show_email %}
+                    <a href="mailto:{{ page_user.email }}" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/email.svg' %}" draggable="false"></a>
+                {% else %}
+                    <a class="display-none" href="/" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/email.svg' %}" draggable="false"></a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    
+    {% if edit %}
+        <form class="box display-none" id="edit-user">
+            <div>
+                <input type="text" placeholder="Name" value="{{ user.get_full_name }}">
+            </div>
+            <div class="switch-label-div">
+                <span>Show email</span>
+                <label class="switch">
+                    <input type="checkbox" {% if user.show_email %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div>
+                <input type="text" placeholder="GitHub" name="url" value="{{ user.github }}">
+                <small>If you don't want to show your GitHub account leave this field empty.</small>
+            </div>
+            <div>
+                <div id="cancel-user-edit" class="btn btn-border">Cancel</div>
+                <div id="save-user-edit" class="btn btn-primary">Save</div>
+            </div>
+        </form>
+        <div id="delete-maybe" class="btn btn-bad-border">Delete account</div>
+        <div id="delete-sure" class="box display-none">
+            <p>Are you sure you want to delete your account?</p>
+            <div>
+                <div class="btn btn-primary">Cancel</div>
+                <a method="post" href="{% url 'delete_account' username=page_user.get_username %}?next={{ request.path }}" class="discreet btn btn-bad">Delete</a>
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
+                <input type="hidden" name="valid" value="valid">
+            </div>
+        </div>
+    {% endif %}
+
+    <section class="box" id="about">
+        {% if edit %}
+            <img class="edit-pen" src="{% static "img/pencil-edit-button.svg" %}" draggable="false">
+            <p>{{ page_user.bio|urlize|url_blank }}</p>
+            <div class="display-none">
+                <div class="btn btn-border fit">Cancel</div>
+                <div class="btn btn-primary fit">Save</div>
+            </div>
+        {% else %}
+            <p>{{ page_user.bio|linebreaksbr|urlize|url_blank }}</p>
+        {% endif %}
+    </section>
+
+    {% if user.is_authenticated %}
+        <form id="write-comment" class="box" method="post">
+            <img class="frame" draggable="false" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E">
+            <div contenteditable="plaintext-only" placeholder="Write a comment"></div>
+            <div type="submit" post-url="{% url 'post_comment' profile=page_user.get_username %}" class="btn fit btn-primary">Comment</div>
+        </form>
+    {% else %}
+        <div id="sign-comment" class="box main-text">
+            <p><a class="link-like" href="{% url 'sign_in' %}?next={{ request.path }}">Sign in</a> to comment</p>
+        </div>
+    {% endif %}
+
+    <section id="comments">
+        {% for comment in comments %}
+            <div class="comment box">
+                {% if edit or comment.user__username == user.username %}
+                    <div class="comment-edit btn btn-border translate opacity0"><div>Delete comment</div></div>
+                    <div class="dots">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <input type="hidden" value="{{ comment.id }}">
+                {% endif %}
+                <div>
+                    <h3 class="main-text"><a class="discreet" href="{% url 'user' profile=comment.user__username %}">{{ comment.user__first_name }} {{ comment.user__last_name }}</a></h3>
+                    <h4 class="minor-text"><a class="discreet" href="{% url 'user' profile=comment.user__username %}">{{ comment.user__username }}</a></h4>
+                </div>
+                <p>{{ comment.comment|linebreaksbr|urlize|url_blank }}</p>
+                <h4 class="minor-text date">{{ comment.pub_date }}</h4>
+                <a class="comment-img" href="{% url 'user' profile=comment.user__username %}"><img class="frame" draggable="false" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E"></a>
+            </div>
+        {% endfor %}
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static "scripts/logged.js" %}"></script>
+    <script src="{% static "scripts/comment.js" %}"></script>
+    {% if edit %}
+        <script src="{% static "scripts/edit_user.js" %}"></script>
+    {% endif %}
+{% endblock %}
